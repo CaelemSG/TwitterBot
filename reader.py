@@ -9,8 +9,10 @@ r = requests.get('https://www.ourcommons.ca/members/en/votes/43/2/130/xml')
 status = r.status_code
 data = r.text
 XMLRoot = ET.fromstring(data)
-
 RidingDict = dict()
+
+#Dictionary
+
 with open('RidingNames.csv',encoding='utf-8') as NameFile:
     FileReader = csv.reader(NameFile)
     for row in FileReader:
@@ -19,12 +21,20 @@ with open('RidingNames.csv',encoding='utf-8') as NameFile:
         RidingDict[row[1]] = row[0]
     print(RidingDict)
 
+DataFile =  open('data.csv','w',newline='',encoding='utf-8')
+FileWriter = csv.writer(DataFile)
+
+
 print(status)
 
+#Writing to file
+
+FileWriter.writerow(['FEDNUM','Riding','Party','Vote'])
 for Voter in XMLRoot:
     Riding = Voter.find('ConstituencyName').text
     RidingID = RidingDict[Riding]
-    Party = Voter.find('CaucusShortName') 
+    Party = Voter.find('CaucusShortName')
+    print(Riding)
     print(RidingID)
     print(Party.text)
     YesVote = Voter.find('IsVoteYea').text == 'true'
@@ -32,3 +42,4 @@ for Voter in XMLRoot:
         print('Y')
     else:
         print('N')
+    FileWriter.writerow([RidingID,Riding,Party,YesVote])
