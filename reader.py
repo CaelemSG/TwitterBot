@@ -4,26 +4,30 @@ import xml.etree.ElementTree as ET
 import requests
 import csv
 from requests.api import get
+# from qgis.core import *
+#QgsApplication.setPrefixPath("C:/Program Files/QGIS 3.18/bin", True)
+#qgs = QgsApplication([],False)
+#qgs.initQgis()
 
-r = requests.get('https://www.ourcommons.ca/members/en/votes/43/2/130/xml')
+r = requests.get('https://www.ourcommons.ca/members/en/votes/43/2/136/xml')
 status = r.status_code
 data = r.text
 XMLRoot = ET.fromstring(data)
 RidingDict = dict()
+RidingList = list()
 
 #Dictionary
-
 with open('RidingNames.csv',encoding='utf-8') as NameFile:
     FileReader = csv.reader(NameFile)
     for row in FileReader:
         row0 = row[0]
         row1 = row[1]
         RidingDict[row[1]] = row[0]
+        RidingList.append(row[0])
     print(RidingDict)
 
 DataFile =  open('data.csv','w',newline='',encoding='utf-8')
 FileWriter = csv.writer(DataFile)
-
 
 print(status)
 
@@ -33,10 +37,10 @@ FileWriter.writerow(['FEDNUM','Riding','Party','Vote'])
 for Voter in XMLRoot:
     Riding = Voter.find('ConstituencyName').text
     RidingID = RidingDict[Riding]
-    Party = Voter.find('CaucusShortName')
+    Party = Voter.find('CaucusShortName').text
     print(Riding)
     print(RidingID)
-    print(Party.text)
+    print(Party)
     YesVote = Voter.find('IsVoteYea').text == 'true'
     if YesVote:
         print('Y')
