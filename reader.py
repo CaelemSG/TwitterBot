@@ -4,11 +4,12 @@ import xml.etree.ElementTree as ET
 import requests
 import csv
 from requests.api import get
-# from qgis.core import *
-#QgsApplication.setPrefixPath("C:/Program Files/QGIS 3.18/bin", True)
-#qgs = QgsApplication([],False)
-#qgs.initQgis()
-
+import sys
+sys.path.append("C:/OSGeo4W64/apps/qgis/python")
+from qgis.core import *
+QgsApplication.setPrefixPath('C:/OSGEO4~1/apps/qgis', True)
+qgs = QgsApplication([],False)
+qgs.initQgis()
 r = requests.get('https://www.ourcommons.ca/members/en/votes/43/2/136/xml')
 status = r.status_code
 data = r.text
@@ -47,3 +48,5 @@ for Voter in XMLRoot:
     else:
         print('N')
     FileWriter.writerow([RidingID,Riding,Party,YesVote])
+
+qgs.exitQgis()
