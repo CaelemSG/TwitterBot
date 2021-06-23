@@ -5,11 +5,11 @@ import requests
 import csv
 from requests.api import get
 import sys
-sys.path.append("C:/OSGeo4W64/apps/qgis/python")
-from qgis.core import *
-QgsApplication.setPrefixPath('C:/OSGEO4~1/apps/qgis', True)
-qgs = QgsApplication([],False)
-qgs.initQgis()
+#sys.path.append("C:/OSGeo4W64/apps/qgis/python")
+#from qgis.core import *
+#QgsApplication.setPrefixPath('C:/OSGEO4~1/apps/qgis', True)
+#qgs = QgsApplication([],False)
+#qgs.initQgis()
 r = requests.get('https://www.ourcommons.ca/members/en/votes/43/2/136/xml')
 status = r.status_code
 data = r.text
@@ -49,4 +49,4 @@ for Voter in XMLRoot:
         print('N')
     FileWriter.writerow([RidingID,Riding,Party,YesVote])
 
-qgs.exitQgis()
+#qgs.exitQgis()
