@@ -5,11 +5,22 @@ import requests
 import csv
 from requests.api import get
 import sys
+
 #sys.path.append("C:/OSGeo4W64/apps/qgis/python")
 #from qgis.core import *
 #QgsApplication.setPrefixPath('C:/OSGEO4~1/apps/qgis', True)
 #qgs = QgsApplication([],False)
 #qgs.initQgis()
+
+VoteList = requests.get('https://www.ourcommons.ca/Members/en/votes/csv')
+VLStatus = VoteList.status_code
+VLData = VoteList.text
+VoteDict = vote()
+
+VoteReader = csv.reader(VLData)
+for row in VoteReader:
+    
+
 r = requests.get('https://www.ourcommons.ca/members/en/votes/43/2/136/xml')
 status = r.status_code
 data = r.text
